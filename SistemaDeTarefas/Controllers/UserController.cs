@@ -28,5 +28,12 @@ namespace SistemaDeTarefas.Controllers
             UserModel user = await _userRepository.FindById(id);
             return Ok(user);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<UserModel>> Create([FromBody] UserModel userModel)
+        {
+            UserModel user = await _userRepository.Create(userModel);
+            return Ok(user);
+        }
     }
 }
