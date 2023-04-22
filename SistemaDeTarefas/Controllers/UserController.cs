@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SistemaDeTarefas.Models;
+using SistemaDeTarefas.Repositories.Interfaces;
 
 namespace SistemaDeTarefas.Controllers
 {
@@ -8,10 +9,24 @@ namespace SistemaDeTarefas.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<List<UserModel>> FindAllUsers()
+        private readonly InterfaceUserRepository _userRepository;
+        public UserController(InterfaceUserRepository userRepository)
         {
-            return Ok();
+            _userRepository = userRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<UserModel>>> FindAll()
+        {
+            List<UserModel> users = await _userRepository.FindAll();
+            return Ok(users);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserModel>> FindById(int id)
+        {
+            UserModel user = await _userRepository.FindById(id);
+            return Ok(user);
         }
     }
 }

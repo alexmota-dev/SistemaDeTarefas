@@ -12,7 +12,7 @@ namespace SistemaDeTarefas.Repositories
         {
             _dbContext = tasksDBContex;
         }
-        public async Task<List<UserModel>> FindAllUsers()
+        public async Task<List<UserModel>> FindAll()
         {
             return await _dbContext.Users.ToListAsync();
         }
