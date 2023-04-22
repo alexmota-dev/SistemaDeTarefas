@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using SistemaDeTarefas.Data;
 using SistemaDeTarefas.Repositories;
 using SistemaDeTarefas.Repositories.Interfaces;
@@ -18,10 +19,13 @@ namespace SistemaDeTarefas
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddEntityFrameworkSqlServer()
+            builder.Services.AddDbContext<TasksDBContex>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            /*builder.Services.AddEntityFrameworkSqlServer()
                 .AddDbContext<TasksDBContex>(
                     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
-                );
+                );*/
+
             //configurando injeção de dependencia
             builder.Services.AddScoped<InterfaceUserRepository, UserRepository>();
 
