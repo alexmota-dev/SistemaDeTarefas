@@ -35,5 +35,27 @@ namespace SistemaDeTarefas.Controllers
             UserModel user = await _userRepository.Create(userModel);
             return Ok(user);
         }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
+        {
+            userModel.Id = id;
+            UserModel user = await _userRepository.Update(userModel, id);
+            return Ok(user);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<UserModel>> Delete(int id)
+        {
+            bool userDeleted = await _userRepository.Delete(id);
+            if(userDeleted)
+            {
+                return Ok(userDeleted);
+            }
+            else
+            {
+                return Ok("User não existe no banco");
+            }
+        }
     }
 }
