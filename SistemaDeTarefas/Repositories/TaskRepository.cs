@@ -22,24 +22,24 @@ namespace SistemaDeTarefas.Repositories
             return await _dbContext.Tasks.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<TaskModel> Create(TaskModel Task)
+        public async Task<TaskModel> Create(TaskModel task)
         {
-            await _dbContext.Tasks.AddAsync(Task);
+            await _dbContext.Tasks.AddAsync(task);
             await _dbContext.SaveChangesAsync();
-            return Task;
+            return task;
         }
 
-        public async Task<TaskModel> Update(TaskModel Task, int id)
+        public async Task<TaskModel> Update(TaskModel task, int id)
         {
-            TaskModel ExistTask = await FindById(id) ?? throw new Exception($"Tarefa para o ID: {id} não foi encontrado no banco de dados.");
-            ExistTask.Name = Task.Name;
-            ExistTask.Description = Task.Description;
-            ExistTask.Status = Task.Status;
+            TaskModel existTask = await FindById(id) ?? throw new Exception($"Tarefa para o ID: {id} não foi encontrado no banco de dados.");
+            existTask.Name = task.Name;
+            existTask.Description = task.Description;
+            existTask.Status = task.Status;
 
-            _dbContext.Tasks.Update(ExistTask);
+            _dbContext.Tasks.Update(existTask);
             await _dbContext.SaveChangesAsync();
 
-            return Task;
+            return task;
         }
 
         public async Task<bool> Delete(int id)
@@ -50,6 +50,14 @@ namespace SistemaDeTarefas.Repositories
             await _dbContext.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<List<TaskModel>> FindByUser(int id)
+        {
+            IQueryable<TaskModel> query = _dbContext.Tasks;
+            //eu posso adicionar varias querys diferentes
+            query = query.Where(x => x.UserId == id);
+            return await query.ToListAsync();
         }
     }
 }

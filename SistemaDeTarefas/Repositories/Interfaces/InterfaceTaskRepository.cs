@@ -9,5 +9,6 @@ namespace SistemaDeTarefas.Repositories.Interfaces
         Task<TaskModel> Create(TaskModel Task);
         Task<TaskModel> Update(TaskModel Task, int id);
         Task<bool> Delete(int id);
+        Task<List<TaskModel>> FindByUser(int id);
     }
 }
