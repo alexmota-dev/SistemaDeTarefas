@@ -31,13 +31,7 @@ namespace SistemaDeTarefas.Repositories
 
         public async Task<UserModel> Update(UserModel user, int id)
         {
-            UserModel ExistUser = await FindById(id);
-
-            if(ExistUser == null)
-            {
-                throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
-            }
-
+            UserModel ExistUser = await FindById(id) ?? throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
             ExistUser.Name = user.Name;
             ExistUser.Email = user.Email;
 
@@ -49,12 +43,7 @@ namespace SistemaDeTarefas.Repositories
 
         public async Task<bool> Delete(int id)
         {
-            UserModel user = await FindById(id);
-
-            if( user == null)
-            {
-                throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
-            }
+            UserModel user = await FindById(id) ?? throw new Exception($"Usuário para o ID: {id} não foi encontrado no banco de dados.");
 
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
