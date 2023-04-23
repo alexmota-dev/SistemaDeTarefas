@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using SistemaDeTarefas.Models;
 using SistemaDeTarefas.Repositories.Interfaces;
+using System.Net;
+using System.Web.Http;
 
 namespace SistemaDeTarefas.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -15,36 +17,41 @@ namespace SistemaDeTarefas.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet]
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<ActionResult<List<UserModel>>> FindAll()
         {
             List<UserModel> users = await _userRepository.FindAll();
             return Ok(users);
         }
 
-        [HttpGet("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpGet("{id}")]
         public async Task<ActionResult<UserModel>> FindById(int id)
         {
+            //inicialmente a regra de negocio vai ficar aqui no controller, depois eu passo ela para um service e faço a injeção de dependencia.
+            if(id < 1 ^ id == null)
+            {
+                return BadRequest("Id Inválido");
+            }
             UserModel user = await _userRepository.FindById(id);
             return Ok(user);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<UserModel>> Create([FromBody] UserModel userModel)
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public async Task<ActionResult<UserModel>> Create([Microsoft.AspNetCore.Mvc.FromBody] UserModel userModel)
         {
             UserModel user = await _userRepository.Create(userModel);
             return Ok(user);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult<UserModel>> Update([FromBody] UserModel userModel, int id)
+        [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
+        public async Task<ActionResult<UserModel>> Update([System.Web.Http.FromBody] UserModel userModel, int id)
         {
             userModel.Id = id;
             UserModel user = await _userRepository.Update(userModel, id);
             return Ok(user);
         }
 
-        [HttpDelete("{id}")]
+        [Microsoft.AspNetCore.Mvc.HttpDelete("{id}")]
         public async Task<ActionResult<UserModel>> Delete(int id)
         {
             bool userDeleted = await _userRepository.Delete(id);
