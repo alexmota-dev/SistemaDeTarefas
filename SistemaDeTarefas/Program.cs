@@ -26,8 +26,10 @@ namespace SistemaDeTarefas
                     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DataBase"))
                 );*/
 
-            //configurando injeção de dependencia
+            //configurando injeção de dependencia - user
             builder.Services.AddScoped<InterfaceUserRepository, UserRepository>();
+            //configurando injeção de dependencia - task
+            builder.Services.AddScoped<InterfaceTaskRepository, TaskRepository>();
 
             var app = builder.Build();
 
