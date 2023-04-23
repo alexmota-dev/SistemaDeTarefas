@@ -31,6 +31,9 @@ namespace SistemaDeTarefas.Controllers
             if(id < 1)
             {
                 return BadRequest("Id Inválido");
+            }else if(id == null)
+            {
+                return BadRequest("Id Vazio");
             }
             UserModel user = await _userRepository.FindById(id);
             return Ok(user);
