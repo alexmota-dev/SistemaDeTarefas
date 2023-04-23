@@ -47,7 +47,7 @@ namespace SistemaDeTarefas.Controllers
         {
             if(taskModel == null || id < 1)
             {
-                return BadRequest("Requisição invalida, verifique o id e o body enviados.");
+                return BadRequest("Requisição inválida, verifique o id e o body enviados.");
             }
 
             taskModel.Id = id;
