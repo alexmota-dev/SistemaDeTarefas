@@ -36,6 +36,13 @@ namespace SistemaDeTarefas.Controllers
             return Ok(task);
         }
 
+        [Microsoft.AspNetCore.Mvc.HttpGet("byUsers/{id}")]
+        public async Task<ActionResult<List<TaskModel>>> FindByUser(int id)
+        {
+            List<TaskModel> tasks = await _taskRepository.FindByUser(id);
+            return tasks;
+        }
+
         [Microsoft.AspNetCore.Mvc.HttpPost]
         public async Task<ActionResult<TaskModel>> Create([Microsoft.AspNetCore.Mvc.FromBody] TaskModel taskModel)
         {
