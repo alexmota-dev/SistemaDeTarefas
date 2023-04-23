@@ -28,7 +28,7 @@ namespace SistemaDeTarefas.Controllers
         public async Task<ActionResult<UserModel>> FindById(int id)
         {
             //inicialmente a regra de negocio vai ficar aqui no controller, depois eu passo ela para um service e faço a injeção de dependencia.
-            if(id < 1 ^ id == null)
+            if(id < 1)
             {
                 return BadRequest("Id Inválido");
             }
@@ -46,6 +46,10 @@ namespace SistemaDeTarefas.Controllers
         [Microsoft.AspNetCore.Mvc.HttpPut("{id}")]
         public async Task<ActionResult<UserModel>> Update([System.Web.Http.FromBody] UserModel userModel, int id)
         {
+            if(userModel == null || id < 1)
+            {
+                return BadRequest("Requisição inválida, verifique o id e o body enviados.");
+            }
             userModel.Id = id;
             UserModel user = await _userRepository.Update(userModel, id);
             return Ok(user);
